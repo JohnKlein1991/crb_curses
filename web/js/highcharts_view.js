@@ -1,8 +1,10 @@
-$("#highchartsform-currency").on('change', (e)=>{
-    let select = e.currentTarget;
+let currencySelect = $("#highchartsform-currency");
+
+currencySelect.on('change', (e)=>{
+    let elem = e.currentTarget;
     let nominalInput = $('#highchartsform-nominal');
     let currencyNameInput = $('#highchartsform-currencyname');
 
-    currencyNameInput.val(select.options[select.selectedIndex].innerHTML);
-    nominalInput.val(select.options[select.selectedIndex].dataset.nominal);
+    currencyNameInput.val(elem.options[elem.selectedIndex].innerHTML);
+    nominalInput.val(elem.options[elem.selectedIndex].dataset.nominal);
 });

@@ -15,25 +15,28 @@ Html::tag('h3', 'Выберите промежуток времени и вал�
 
 
 $form = ActiveForm::begin([
-    'enableClientValidation' => false
+    'enableClientValidation' => false,
 ]);
 echo $form->field($model, 'dateFrom')
-    ->label('Выберите промежуток времени')
+    ->label('Выберите промежуток времени:')
     ->widget(DateRangePicker::class, [
         'options' => [
-            'readonly' => true
+            'readonly' => true,
+            'required' => true
         ],
         'optionsTo' => [
-            'readonly' => true
+            'readonly' => true,
+            'required' => true
         ],
-        'labelTo' => '-',
+        'labelTo' => '',
         'attributeTo' => 'dateTo',
         'form' => $form,
         'language' => 'ru',
         'size' => 'sm',
         'clientOptions' => [
             'autoclose' => true,
-            'format' => 'yyyy/mm/dd'
+            'format' => 'yyyy/mm/dd',
+            'endDate' => 'today',
         ]
     ]);
 echo $form->field($model, 'currency')->dropDownList(

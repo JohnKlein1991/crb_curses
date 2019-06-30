@@ -21,10 +21,12 @@ echo $form->field($model, 'dateFrom')
     ->label('Выберите промежуток времени:')
     ->widget(DateRangePicker::class, [
         'options' => [
-            'readonly' => true
+            'readonly' => true,
+            'required' => true
         ],
         'optionsTo' => [
-            'readonly' => true
+            'readonly' => true,
+            'required' => true
         ],
         'labelTo' => '',
         'attributeTo' => 'dateTo',

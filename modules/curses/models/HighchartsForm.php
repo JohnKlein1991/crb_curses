@@ -28,11 +28,4 @@ class HighchartsForm extends Model
             [['nominal'], 'integer']
         ];
     }
-    public function save()
-    {
-        if($this->validate()){
-            return true;
-        }
-        return false;
-    }
 }

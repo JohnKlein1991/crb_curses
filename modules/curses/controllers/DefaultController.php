@@ -49,17 +49,28 @@ class DefaultController extends Controller
     }
     public function actionHighcharts()
     {
-        $data = $this->getListOfValutes();
+        try {
+            $data = $this->getListOfCurrencies();
+        } catch (Exception $e) {
+            $data = false;
+        }
+        if(!$data){
+            return $this->render('wrongResponse');
+        }
         $listOfCurrencies = $data['curList'];
         $options = $data['options'];
         $model = new HighchartsForm();
         if($model->load(Yii::$app->request->post())){
-            if($model->save()){
-                $highchartsData = $this->getCurrenciesDynamic(
-                    $model->dateFrom,
-                    $model->dateTo,
-                    $model->currency
-                );
+            if($model->validate()){
+                try {
+                    $highchartsData = $this->getCurrenciesDynamic(
+                        $model->dateFrom,
+                        $model->dateTo,
+                        $model->currency
+                    );
+                } catch(Exception $e) {
+                        $highchartsData = [];
+                }
                 return $this->render(
                     'renderHighcharts',
                     [
@@ -69,6 +80,7 @@ class DefaultController extends Controller
                     ]
                 );
             }
+            Yii::$app->session->setFlash('danger', 'Не удалось обработать запрос');
         }
         return $this->render(
             'highcharts',
@@ -81,20 +93,29 @@ class DefaultController extends Controller
     }
     public function actionGetReports()
     {
-        $listOfCurrencies = $this->getListOfValutes()['curList'];
-        $options = $this->getListOfValutes()['options'];
+        $data = $this->getListOfCurrencies();
+        $listOfCurrencies = $data['curList'];
+        $options = $data['options'];
         $model = new HighchartsForm();
-        if($model->load(Yii::$app->request->post()) && $model->validate()){
-            $dynamic = $this->getCurrenciesDynamic(
-                $model->dateFrom,
-                $model->dateTo,
-                $model->currency
-            );
-            if(!$dynamic || !isset($dynamic['@attributes']) || !isset($dynamic['Record'])){
-                return $this->render('wrong');
+        if($model->load(Yii::$app->request->post())){
+            if ($model->validate()){
+                try {
+                    $dynamic = $this->getCurrenciesDynamic(
+                        $model->dateFrom,
+                        $model->dateTo,
+                        $model->currency
+                    );
+                } catch (Exception $e) {
+                    $dynamic = [];
+                }
+                if(!$dynamic || !isset($dynamic['@attributes']) || !isset($dynamic['Record'])){
+                    return $this->render('wrong');
+                }
+                $reportJson = $this->createReportJson($model, $dynamic);
+                $this->sendReport($reportJson);
+            } else {
+                Yii::$app->session->setFlash('danger', 'Не удалось обработать запрос');
             }
-            $reportJson = $this->createReportJson($model, $dynamic);
-            $this->sendReport($reportJson);
         }
         return $this->render(
             'reports',
@@ -142,7 +163,7 @@ class DefaultController extends Controller
         $dt = date('d/m/Y' ,strtotime($dateTo));
         $cd = trim($code);
         $client = new Client([
-            'baseUrl' => 'http://www.cbr.ru/scripts/XML_dynamic.asp',
+            'baseUrl' => Yii::$app->params['crbApiUrl'].'XML_dynamic.asp',
             'responseConfig' => [
                 'format' => Client::FORMAT_XML
             ],
@@ -157,10 +178,10 @@ class DefaultController extends Controller
         }
         return false;
     }
-    private function getListOfValutes()
+    private function getListOfCurrencies()
     {
         $client = new Client([
-            'baseUrl' => 'http://www.cbr.ru/scripts/XML_val.asp',
+            'baseUrl' => Yii::$app->params['crbApiUrl'].'XML_val.asp',
             'responseConfig' => [
                 'format' => Client::FORMAT_XML
             ],
@@ -198,7 +219,7 @@ class DefaultController extends Controller
     {
         $date = $date ?? date('d/m/Y');
         $client = new Client([
-            'baseUrl' => 'http://www.cbr.ru/scripts/XML_daily.asp',
+            'baseUrl' => Yii::$app->params['crbApiUrl'].'XML_daily.asp',
             'responseConfig' => [
                 'format' => Client::FORMAT_XML
             ],
