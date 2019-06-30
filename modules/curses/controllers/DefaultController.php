@@ -133,7 +133,7 @@ class DefaultController extends Controller
         header("Content-Transfer-Encoding: binary");
         header("Content-Length: " . strlen($json));
         echo $json;
-        //exit();
+        exit();
     }
 
     private function getCurrenciesDynamic($dateFrom, $dateTo, $code)
