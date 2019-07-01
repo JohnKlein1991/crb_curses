@@ -1,5 +1,6 @@
 <?php
-/* @var $model \app\modules\curses\models\HighchartsForm */
+/* view форма для запроса графика валюты */
+/* @var $model \app\modules\curses\models\Currency */
 /* @var $list array */
 /* @var $options array */
 
@@ -8,7 +9,7 @@ use dosamigos\datepicker\DateRangePicker;
 use yii\widgets\ActiveForm;
 use yii\web\JqueryAsset;
 
-$this->registerJsFile('@web/js/highcharts_view.js',
+$this->registerJsFile('@web/js/highcharts_form.js',
     ['depends' => [JqueryAsset::class]]);
 
 echo Html::tag('h3', 'Выберите промежуток времени и валюту');
@@ -22,11 +23,13 @@ echo $form->field($model, 'dateFrom')
     ->widget(DateRangePicker::class, [
         'options' => [
             'readonly' => true,
-            'required' => true
+            'required' => true,
+            'placeholder' => 'Кликните для выбора даты'
         ],
         'optionsTo' => [
             'readonly' => true,
-            'required' => true
+            'required' => true,
+            'placeholder' => 'Кликните для выбора даты'
         ],
         'labelTo' => '',
         'attributeTo' => 'dateTo',

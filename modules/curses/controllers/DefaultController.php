@@ -7,17 +7,18 @@ use yii\db\Exception;
 use yii\web\Controller;
 use yii\httpclient\Client;
 use yii\data\ArrayDataProvider;
-use app\modules\curses\models\CurrentCurses;
-use app\modules\curses\models\HighchartsForm;
+use app\modules\curses\models\Currency;
 use yii\helpers\ArrayHelper;
 use Yii;
 use yii\helpers\Json;
 
 class DefaultController extends Controller
 {
+    //метод для показа таблицы курсов
     public function actionIndex($date = null)
     {
-        $model = new CurrentCurses();
+        $model = new Currency();
+        $model->scenario = Currency::SCENARIO_SHOW_CURSES;
         if($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
                 $date = $model->date;
@@ -47,6 +48,7 @@ class DefaultController extends Controller
             'date' => $date
         ]);
     }
+    //метод для работы с графиками валют
     public function actionHighcharts()
     {
         try {
@@ -59,7 +61,8 @@ class DefaultController extends Controller
         }
         $listOfCurrencies = $data['curList'];
         $options = $data['options'];
-        $model = new HighchartsForm();
+        $model = new Currency();
+        $model->scenario = Currency::SCENARIO_SHOW_HIGHCHART;
         if($model->load(Yii::$app->request->post())){
             if($model->validate()){
                 try {
@@ -83,7 +86,7 @@ class DefaultController extends Controller
             Yii::$app->session->setFlash('danger', 'Не удалось обработать запрос');
         }
         return $this->render(
-            'highcharts',
+            'highcharts_form',
             [
                 'model' => $model,
                 'list' => $listOfCurrencies,
@@ -91,12 +94,14 @@ class DefaultController extends Controller
             ]
         );
     }
+    //метод для работы с отчетами по курсам за промежуток времени
     public function actionGetReports()
     {
         $data = $this->getListOfCurrencies();
         $listOfCurrencies = $data['curList'];
         $options = $data['options'];
-        $model = new HighchartsForm();
+        $model = new Currency();
+        $model->scenario = Currency::SCENARIO_MAKE_REPORT;
         if($model->load(Yii::$app->request->post())){
             if ($model->validate()){
                 try {
@@ -126,6 +131,7 @@ class DefaultController extends Controller
             ]
         );
     }
+    // метод для создания отчета в формате json и данных, которые приходят с ЦБ
     private function createReportJson($model, $dynamic){
         $report = [];
         $report['report_info'] = [
@@ -145,7 +151,7 @@ class DefaultController extends Controller
         $reportJson = Json::encode($report);
         return $reportJson;
     }
-
+    //метод для отправки файла посетителю
     private function sendReport($json)
     {
         header("Pragma: public");
@@ -156,7 +162,7 @@ class DefaultController extends Controller
         echo $json;
         exit();
     }
-
+    // метод для получения с ЦБ динамики изменения валюты за промежуток времени
     private function getCurrenciesDynamic($dateFrom, $dateTo, $code)
     {
         $df = date('d/m/Y' ,strtotime($dateFrom));
@@ -178,6 +184,7 @@ class DefaultController extends Controller
         }
         return false;
     }
+    // метод для получения с ЦБ списка валют
     private function getListOfCurrencies()
     {
         $client = new Client([
@@ -205,6 +212,7 @@ class DefaultController extends Controller
         }
         return false;
     }
+    // подготавливаем данные со списком валют для показа
     private function prepareDataForView($data)
     {
         $provider = new ArrayDataProvider([
@@ -215,7 +223,8 @@ class DefaultController extends Controller
         ]);
         return $provider;
     }
-    private function getDataFromCB($date)
+    // метод для получения курсов валют по определенной дате
+    private function getDataFromCB($date = null)
     {
         $date = $date ?? date('d/m/Y');
         $client = new Client([
@@ -231,5 +240,6 @@ class DefaultController extends Controller
         if ($response->isOk) {
             return $response->data['Valute'] ?? false;
         }
+        return false;
     }
 }

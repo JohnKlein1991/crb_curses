@@ -1,4 +1,5 @@
 <?php
+/* view для отображения таблицы с валютами */
 /* @var $data array */
 /* @var $model \app\modules\curses\models\CurrentCurses */
 /* @var $date string */
@@ -21,6 +22,7 @@ echo $form->field($model, 'date')
             'language' => 'ru',
             'options' => [
                 'readonly' => true,
+                'placeholder' => 'Кликните для выбора даты'
             ],
             'clientOptions' => [
                 'autoclose' => true,

@@ -1,17 +1,31 @@
 <?php
-
+/* модель для работы курсами */
 
 namespace app\modules\curses\models;
 
 use yii\base\Model;
 
-class HighchartsForm extends Model
+class Currency extends Model
 {
+    const SCENARIO_SHOW_CURSES = 'show_curses';
+    const SCENARIO_SHOW_HIGHCHART = 'show_highchart';
+    const SCENARIO_MAKE_REPORT = 'make_report';
+
     public $dateFrom;
     public $dateTo;
     public $currency;
     public $currencyName;
     public $nominal;
+    public $date;
+
+    public function scenarios()
+    {
+        return [
+            self::SCENARIO_MAKE_REPORT => ['dateFrom', 'dateTo', 'currency', 'currencyName', 'nominal'],
+            self::SCENARIO_SHOW_HIGHCHART => ['dateFrom', 'dateTo', 'currency', 'currencyName', 'nominal'],
+            self::SCENARIO_SHOW_CURSES => ['date']
+        ];
+    }
 
     public function rules()
     {
@@ -25,7 +39,8 @@ class HighchartsForm extends Model
                 'message' => 'Некорректная начальная дата'],
             ['dateTo', 'compare', 'compareAttribute' => 'dateFrom', 'operator' => '>', 'type' => 'date',
                 'message' => 'Некорректная конечная дата'],
-            [['nominal'], 'integer']
+            [['nominal'], 'integer'],
+            [['date'], 'date', 'format'=>'dd/mm/YYYY', 'message' => 'Некорректная дата'],
         ];
     }
 }

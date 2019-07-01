@@ -1,4 +1,5 @@
 <?php
+/* view для отображения графика изменения определенной валюты */
 /* @var $data array */
 /* @var $currencyName string */
 /* @var $nominal integer */

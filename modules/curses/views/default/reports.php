@@ -1,4 +1,5 @@
 <?php
+/* view для отчеттов */
 /* @var $model \app\modules\curses\models\HighchartsForm */
 /* @var $list array */
 /* @var $options array */
@@ -22,11 +23,13 @@ echo $form->field($model, 'dateFrom')
     ->widget(DateRangePicker::class, [
         'options' => [
             'readonly' => true,
-            'required' => true
+            'required' => true,
+            'placeholder' => 'Кликните для выбора даты'
         ],
         'optionsTo' => [
             'readonly' => true,
-            'required' => true
+            'required' => true,
+            'placeholder' => 'Кликните для выбора даты'
         ],
         'labelTo' => '',
         'attributeTo' => 'dateTo',
