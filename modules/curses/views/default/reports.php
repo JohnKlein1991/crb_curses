@@ -9,7 +9,7 @@ use dosamigos\datepicker\DateRangePicker;
 use yii\widgets\ActiveForm;
 use yii\web\JqueryAsset;
 
-$this->registerJsFile('@web/js/highcharts_view.js',
+$this->registerJsFile('@web/js/highcharts_form.js',
     ['depends' => [JqueryAsset::class]]);
 
 Html::tag('h3', 'Выберите промежуток времени и валюту, и нажмите "Запросить отчет"');
