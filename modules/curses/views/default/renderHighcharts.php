@@ -10,7 +10,7 @@ use yii\helpers\Html;
 if(!isset($data['Record'])){
     echo Html::tag(
         'p',
-        'По данному курсу валют информации нет',
+        Yii::t('app', 'По данному курсу валют информации нет'),
         [
             'class' => 'bg-danger',
             'style' => [
@@ -48,7 +48,13 @@ if(!isset($data['Record'])){
                 'categories' => $xk
             ],
             'yAxis' => [
-                'title' => ['text' => 'Стоимость '.$nominal.' ед.'],
+                'title' => ['text' => Yii::t(
+                    'app',
+                    'Стоимость {nominal} ед.',
+                    [
+                        'nominal' => $nominal
+                    ]
+                )],
                 'categories' => $yk
             ],
             'series' => [

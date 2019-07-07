@@ -3,6 +3,7 @@
 /* @var $data array */
 /* @var $model \app\modules\curses\models\CurrentCurses */
 /* @var $date string */
+/* @var $lang string */
 
 use fedemotta\datatables\DataTables;
 use dosamigos\datepicker\DatePicker;
@@ -19,7 +20,7 @@ echo $form->field($model, 'date')
         DatePicker::class, [
             'attribute' => 'date',
             'template' => '{addon}{input}',
-            'language' => 'ru',
+            'language' => $lang,
             'options' => [
                 'readonly' => true,
                 'placeholder' => Yii::t('app', 'Кликните для выбора даты')
@@ -43,6 +44,7 @@ if($data){
             'Name', 'CharCode', 'Nominal', 'Value',
         ],
         'clientOptions' => [
+            'language' => 'fr',
             "lengthMenu"=> [[15,-1], [15,Yii::t('app',"All")]],
             "info"=>'Test info',
             "responsive"=>true,

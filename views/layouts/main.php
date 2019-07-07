@@ -29,7 +29,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'Курсы валют',
+        'brandLabel' => Yii::t('app', 'Курсы валют'),
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -38,10 +38,10 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Главная', 'url' => ['/site/index']],
-            ['label' => 'Курсы валют', 'url' => ['/curses/default/index']],
-            ['label' => 'Динамика изменения курсов', 'url' => ['/curses/default/highcharts']],
-            ['label' => 'Подготовить отчет', 'url' => ['/curses/default/get-reports']],
+            ['label' => Yii::t('app','Главная'), 'url' => ['/site/index']],
+            ['label' => Yii::t('app', 'Курсы валют'), 'url' => ['/curses/default/index']],
+            ['label' => Yii::t('app', 'Динамика изменения курсов'), 'url' => ['/curses/default/highcharts']],
+            ['label' => Yii::t('app', 'Подготовить отчет'), 'url' => ['/curses/default/get-reports']],
             [
                 'label' => 'Language',
                 'items' => [
@@ -64,7 +64,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">Курсы валют <?= date('Y') ?></p>
+        <p class="pull-left"><?=Yii::t('app', 'Курсы валют')?><?= date('Y') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 echo Html::tag(
     'p',
-    'По данному курсу валют информации нет',
+    Yii::t('app', 'По данному курсу валют информации нет'),
     [
         'class' => 'bg-danger',
         'style' => [

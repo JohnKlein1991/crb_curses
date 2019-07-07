@@ -42,10 +42,12 @@ class DefaultController extends Controller
         } else {
             $data = $this->prepareDataForView($cursesInfo);
         }
+        $lang = $this->getLang();
         return $this->render('index', [
             'data' => $data,
             'model' => $model,
-            'date' => $date
+            'date' => $date,
+            'lang' => $lang
         ]);
     }
     //метод для работы с графиками валют
@@ -85,12 +87,14 @@ class DefaultController extends Controller
             }
             Yii::$app->session->setFlash('danger', 'Не удалось обработать запрос');
         }
+        $lang = $this->getLang();
         return $this->render(
             'highcharts_form',
             [
                 'model' => $model,
                 'list' => $listOfCurrencies,
-                'options' => $options
+                'options' => $options,
+                'lang' => $lang
             ]
         );
     }
@@ -122,14 +126,23 @@ class DefaultController extends Controller
                 Yii::$app->session->setFlash('danger', 'Не удалось обработать запрос');
             }
         }
+        $lang = $this->getLang();
         return $this->render(
             'reports',
             [
                 'model' => $model,
                 'list' => $listOfCurrencies,
-                'options' => $options
+                'options' => $options,
+                'lang' => $lang
             ]
         );
+    }
+    //метод для получения идентификатора языка для виджетов
+    private function getLang()
+    {
+        $langCode = Yii::$app->language->value;
+        $lang = Yii::$app->params['langForWidgets'][$langCode] ?? 'ru';
+        return $lang;
     }
     // метод для создания отчета в формате json и данных, которые приходят с ЦБ
     private function createReportJson($model, $dynamic){

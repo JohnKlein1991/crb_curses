@@ -5,5 +5,10 @@ return [
     'languages' => [
         'en' => 'en-EN',
         'ru' => 'ru-RU'
-    ]
+    ],
+    'langForWidgets' => [
+        'en-EN' => 'en',
+        'ru-RU' => 'ru'
+    ],
+
 ];
