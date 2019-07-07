@@ -42,6 +42,13 @@ AppAsset::register($this);
             ['label' => 'Курсы валют', 'url' => ['/curses/default/index']],
             ['label' => 'Динамика изменения курсов', 'url' => ['/curses/default/highcharts']],
             ['label' => 'Подготовить отчет', 'url' => ['/curses/default/get-reports']],
+            [
+                'label' => 'Language',
+                'items' => [
+                    ['label' => 'English', 'url' => ['/site/language?l=en']],
+                    ['label' => 'Русский', 'url' => ['/site/language?l=ru']],
+                ],
+            ],
         ],
     ]);
     NavBar::end();

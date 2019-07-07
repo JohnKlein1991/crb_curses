@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\Cookie;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -62,6 +63,21 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionLanguage()
+    {
+        $lanArr = Yii::$app->params['languages'];
+        $lan = Yii::$app->request->get('l');
+        if(isset($lanArr[$lan])){
+            $lanCookie = new Cookie([
+                'name' => 'language',
+                'value' => $lanArr[$lan],
+                'expire' => time() + 60*60*24*30
+            ]);
+            Yii::$app->response->cookies->add($lanCookie);
+        }
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**

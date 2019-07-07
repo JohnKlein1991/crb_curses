@@ -14,7 +14,7 @@ if(Yii::$app->session->hasFlash('danger')){
 }
 $form = ActiveForm::begin();
 echo $form->field($model, 'date')
-    ->label('Выберите дату:')
+    ->label(Yii::t('app', 'Выберите дату:'))
     ->widget(
         DatePicker::class, [
             'attribute' => 'date',
@@ -22,7 +22,7 @@ echo $form->field($model, 'date')
             'language' => 'ru',
             'options' => [
                 'readonly' => true,
-                'placeholder' => 'Кликните для выбора даты'
+                'placeholder' => Yii::t('app', 'Кликните для выбора даты')
             ],
             'clientOptions' => [
                 'autoclose' => true,
@@ -31,11 +31,11 @@ echo $form->field($model, 'date')
             ]
     ]);
 
-echo Html::submitButton('Показать курсы валют', ['class' => 'btn btn-primary']);
+echo Html::submitButton(Yii::t('app', 'Показать курсы валют'), ['class' => 'btn btn-primary']);
 ActiveForm::end();
 if($data){
     echo '<br>';
-    echo Html::tag('h3', 'Курсы валют на '.$date);
+    echo Html::tag('h3', Yii::t('app', 'Курсы валют на ').$date);
     echo DataTables::widget([
         'dataProvider' => $data,
         'columns' => [
